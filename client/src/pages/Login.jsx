@@ -34,7 +34,11 @@ const Login = () => {
       else if (userRole === 'driver') navigate('/driver');
       else navigate('/dashboard');
     } catch (err) {
-      setError(err.response?.data?.message || 'Login failed. Please try again.');
+      const errMsg = err.response?.data?.error || 
+                     (err.response?.data?.errors && err.response.data.errors[0]?.message) || 
+                     err.response?.data?.message || 
+                     'Login failed. Please try again.';
+      setError(errMsg);
     } finally {
       setLoading(false);
     }
