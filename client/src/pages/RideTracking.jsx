@@ -211,10 +211,10 @@ const RideTracking = () => {
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
                   color: 'white', fontWeight: 700, fontSize: '1.2rem',
                 }}>
-                  {(ride.driver.name || 'D')[0].toUpperCase()}
+                  {(ride.driver.user?.name || ride.driver.name || 'D')[0].toUpperCase()}
                 </div>
                 <div style={{ flex: 1 }}>
-                  <div style={{ fontWeight: 600, fontSize: '1.1rem' }}>{ride.driver.name || 'Driver'}</div>
+                  <div style={{ fontWeight: 600, fontSize: '1.1rem' }}>{ride.driver.user?.name || ride.driver.name || 'Driver'} <span style={{ color: 'var(--text-muted)', fontWeight: 400, fontSize: '0.85rem' }}>(Driver)</span></div>
                   <div style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>
                     {ride.driver.vehicleName || ride.driver.vehicle?.name} • {ride.driver.vehicleNumber || ride.driver.vehicle?.number}
                   </div>
@@ -224,8 +224,8 @@ const RideTracking = () => {
                     ))}
                   </div>
                 </div>
-                {ride.driver.phone && (
-                  <a href={`tel:${ride.driver.phone}`} className="btn btn-icon btn-primary">
+                {(ride.driver.user?.phone || ride.driver.phone) && (
+                  <a href={`tel:${ride.driver.user?.phone || ride.driver.phone}`} className="btn btn-icon btn-primary">
                     <FiPhone size={16} />
                   </a>
                 )}

@@ -124,7 +124,7 @@ const DriverRideView = () => {
           {ride.user && (
             <div className="glass-card" style={{ marginBottom: '1rem' }}>
               <h4 style={{ marginBottom: '0.75rem' }}><FiUser size={16} style={{ verticalAlign: 'middle', marginRight: '0.5rem' }} />Passenger</h4>
-              <div style={{ fontWeight: 600, fontSize: '1.1rem' }}>{ride.user.name || 'Passenger'}</div>
+              <div style={{ fontWeight: 600, fontSize: '1.1rem' }}>{ride.user.name || 'Passenger'} <span style={{ color: 'var(--text-muted)', fontWeight: 400, fontSize: '0.85rem' }}>(User)</span></div>
               {ride.user.phone && (
                 <a href={`tel:${ride.user.phone}`} style={{ color: 'var(--primary)', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '0.25rem', marginTop: '0.25rem' }}>
                   <FiPhone size={14} /> {ride.user.phone}

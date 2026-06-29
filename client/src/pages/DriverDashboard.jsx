@@ -273,7 +273,10 @@ const DriverDashboard = () => {
             {activeRide.user && (
               <div style={{ padding: '0.75rem', background: 'var(--bg-surface-hover)', borderRadius: 'var(--radius-md)', marginBottom: '1rem' }}>
                 <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>Passenger</div>
-                <div style={{ fontWeight: 600 }}>{activeRide.user.name || 'Passenger'}</div>
+                <div style={{ fontWeight: 600 }}>{activeRide.user.name || 'Passenger'} <span style={{ color: 'var(--text-muted)', fontWeight: 400, fontSize: '0.85rem' }}>(User)</span></div>
+                {activeRide.user.phone && (
+                  <div style={{ fontSize: '0.85rem', color: 'var(--primary)', marginTop: '0.25rem' }}>📞 {activeRide.user.phone}</div>
+                )}
               </div>
             )}
 
