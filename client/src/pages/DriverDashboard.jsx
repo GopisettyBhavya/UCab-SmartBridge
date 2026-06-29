@@ -38,7 +38,10 @@ const DriverDashboard = () => {
         ]);
 
         if (activeRes.status === 'fulfilled') {
-          const ride = activeRes.value.data.ride || activeRes.value.data;
+          const resData = activeRes.value.data;
+          // The API returns { success, data: [rides...] } — extract the first ride from the array
+          const rides = resData.data || resData.rides || [];
+          const ride = Array.isArray(rides) ? rides[0] : rides;
           if (ride && ride._id && !['completed', 'cancelled'].includes(ride.status)) {
             setActiveRide(ride);
             setIsAvailable(true);
@@ -118,10 +121,14 @@ const DriverDashboard = () => {
     if (!incomingRequest) return;
     try {
       await driverService.acceptRide(incomingRequest._id);
+      // Re-fetch the ride to get properly populated passenger (user) data
+      const res = await rideService.getById(incomingRequest._id);
+      const rideData = res.data?.data || res.data;
+      setActiveRide({ ...rideData, status: 'accepted' });
     } catch (err) {
-      // simulate
+      // Fallback to socket data if API fails
+      setActiveRide({ ...incomingRequest, status: 'accepted' });
     }
-    setActiveRide({ ...incomingRequest, status: 'accepted' });
     setIncomingRequest(null);
     setOtpValue(['', '', '', '']); // Reset OTP for new ride
     setOtpError('');
