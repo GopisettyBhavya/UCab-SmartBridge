@@ -11,3 +11,4 @@ The Ucab application follows a traditional Client-Server architecture utilizing 
 ## Architecture Diagram
 
 <img width="1500" height="857" alt="image" src="https://github.com/user-attachments/assets/7684ffe4-e745-458c-9f8c-768dfe22383d" />
+<img width="800" height="400" alt="image" src="https://github.com/user-attachments/assets/43510a33-e842-4f67-b05d-ae4eb7eb07a4" />
