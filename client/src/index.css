@@ -1531,6 +1531,7 @@ textarea.form-input {
   }
 
   .booking-map {
+    height: 50vh;
     min-height: 400px;
   }
 }
