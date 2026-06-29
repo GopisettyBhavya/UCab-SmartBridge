@@ -10,9 +10,4 @@ The Ucab application follows a traditional Client-Server architecture utilizing 
 
 ## Architecture Diagram
 
-```mermaid
-flowchart LR
-    A[Client Browser / React] <-->|REST API (HTTP)| B(Express Node.js Server)
-    A <-->|Socket.IO (WebSocket)| B
-    B <-->|Mongoose ODM| C[(MongoDB Atlas)]
-```
+<img width="1500" height="857" alt="image" src="https://github.com/user-attachments/assets/7684ffe4-e745-458c-9f8c-768dfe22383d" />
