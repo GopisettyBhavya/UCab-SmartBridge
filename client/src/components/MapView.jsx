@@ -43,6 +43,17 @@ const RecenterMap = ({ center }) => {
   return null;
 };
 
+const ForceResize = () => {
+  const map = useMap();
+  useEffect(() => {
+    // Force Leaflet to recalculate size after container animations/flex layouts resolve
+    const timer1 = setTimeout(() => map.invalidateSize(), 100);
+    const timer2 = setTimeout(() => map.invalidateSize(), 500);
+    return () => { clearTimeout(timer1); clearTimeout(timer2); };
+  }, [map]);
+  return null;
+};
+
 const MapView = ({
   center = [12.9716, 77.5946],
   zoom = 13,
@@ -119,6 +130,7 @@ const MapView = ({
         )}
 
         <RecenterMap center={center} />
+        <ForceResize />
       </MapContainer>
     </div>
   );
