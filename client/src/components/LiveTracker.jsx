@@ -4,15 +4,21 @@ import MapView from './MapView';
 const LiveTracker = ({ ride, driverLocation }) => {
   if (!ride) return null;
 
-  const pickupLoc = ride.pickup ? {
-    lat: ride.pickup.coordinates ? ride.pickup.coordinates[1] : ride.pickup.lat,
-    lng: ride.pickup.coordinates ? ride.pickup.coordinates[0] : ride.pickup.lng,
-  } : null;
+  const pickupLoc = (ride.pickupLocation || ride.pickup) ? (() => {
+    const p = ride.pickupLocation || ride.pickup;
+    return {
+      lat: p.coordinates ? p.coordinates[1] : p.lat,
+      lng: p.coordinates ? p.coordinates[0] : p.lng,
+    };
+  })() : null;
 
-  const dropoffLoc = ride.dropoff ? {
-    lat: ride.dropoff.coordinates ? ride.dropoff.coordinates[1] : ride.dropoff.lat,
-    lng: ride.dropoff.coordinates ? ride.dropoff.coordinates[0] : ride.dropoff.lng,
-  } : null;
+  const dropoffLoc = (ride.dropoffLocation || ride.dropoff) ? (() => {
+    const d = ride.dropoffLocation || ride.dropoff;
+    return {
+      lat: d.coordinates ? d.coordinates[1] : d.lat,
+      lng: d.coordinates ? d.coordinates[0] : d.lng,
+    };
+  })() : null;
 
   return (
     <div>

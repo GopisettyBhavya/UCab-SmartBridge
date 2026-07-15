@@ -115,7 +115,13 @@ const RideTracking = () => {
   const handlePayment = async (paymentData) => {
     setPaymentLoading(true);
     try {
-      await rideService.pay(id, paymentData);
+      // Try the dedicated payment endpoint first; fall back to ride pay endpoint
+      try {
+        const { paymentService } = await import('../services/api');
+        await paymentService.processPayment(id, paymentData);
+      } catch {
+        await rideService.pay(id, paymentData);
+      }
       setRide(prev => ({ ...prev, paymentStatus: 'completed' }));
       setShowPayment(false);
     } catch (err) {

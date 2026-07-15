@@ -18,7 +18,8 @@ const DriverRideView = () => {
     const fetchRide = async () => {
       try {
         const res = await rideService.getById(id);
-        setRide(res.data.ride || res.data);
+        // Backend returns { success: true, data: ride }
+        setRide(res.data?.data || res.data);
       } catch (err) {
         console.error('Error fetching ride:', err);
       } finally {

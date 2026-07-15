@@ -45,7 +45,8 @@ export const rideService = {
   create: (data) => api.post('/rides/book', data),
   getById: (id) => api.get(`/rides/${id}`),
   getMyRides: (params) => api.get('/rides/history', { params }),
-  getActiveRide: () => api.get('/rides/history', { params: { limit: 1 } }), // Fallback since active route doesn't exist
+  // Fetch active ride: first non-completed, non-cancelled ride from history
+  getActiveRide: () => api.get('/rides/history', { params: { limit: 5 } }),
   cancel: (id) => api.put(`/rides/${id}/cancel`),
   rate: (id, data) => api.put(`/rides/${id}/rate`, data),
   pay: (id, data) => api.put(`/rides/${id}/pay`, data),
@@ -54,23 +55,24 @@ export const rideService = {
 
 export const driverService = {
   toggleAvailability: (status) => api.put('/drivers/availability', { isAvailable: status }),
-  getActiveRide: () => api.get('/rides/history', { params: { limit: 1 } }), // Fallback
+  getActiveRide: () => api.get('/rides/history', { params: { limit: 5 } }),
   acceptRide: (id) => api.put(`/rides/${id}/accept`),
   rejectRide: (id) => api.put(`/rides/${id}/cancel`),
-  verifyOtp: (id, otp) => api.put(`/rides/${id}/start`, { otp }), // Start ride requires OTP
+  // verifyOtp sends the OTP in body — backend PUT /rides/:id/start expects { otp }
+  verifyOtp: (id, otp) => api.put(`/rides/${id}/start`, { otp }),
   startRide: (id) => api.put(`/rides/${id}/start`),
   completeRide: (id) => api.put(`/rides/${id}/complete`),
   updateLocation: (location) => api.put('/drivers/location', { longitude: location.lng, latitude: location.lat }),
   getMyRides: (params) => api.get('/rides/history', { params }),
   getEarnings: () => api.get('/drivers/stats'),
+  // Backend expects longitude/latitude query params (not lat/lng)
   getNearby: (lat, lng, radius) => api.get('/drivers/nearby', { params: { latitude: lat, longitude: lng, maxDistance: radius } }),
 };
 
 export const paymentService = {
-  processPayment: (rideId, data) => api.post(`/payments/${rideId}`, data),
-  getWallet: () => api.get('/payments/wallet'),
-  topUpWallet: (amount) => api.post('/payments/wallet/topup', { amount }),
-  getPaymentMethods: () => api.get('/payments/methods'),
+  // Backend route is POST /api/payments/process with { rideId, method } in body
+  processPayment: (rideId, data) => api.post('/payments/process', { rideId, ...data }),
+  getPaymentHistory: () => api.get('/payments/history'),
 };
 
 export const adminService = {
@@ -80,7 +82,6 @@ export const adminService = {
   getRides: (params) => api.get('/admin/rides', { params }),
   verifyDriver: (id) => api.put(`/admin/drivers/${id}/verify`, { verified: true }),
   rejectDriver: (id) => api.put(`/admin/drivers/${id}/verify`, { verified: false }),
-  updateUser: (id, data) => api.put(`/admin/users/${id}`, data),
 };
 
 export default api;

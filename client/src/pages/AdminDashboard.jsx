@@ -36,14 +36,14 @@ const AdminDashboard = () => {
       try {
         if (activeTab === 'overview') {
           const res = await adminService.getStats();
-          const data = res.data;
+          const data = res.data?.data || res.data;
           setStats({
-            totalUsers: data.totalUsers || data.users || 125,
-            totalDrivers: data.totalDrivers || data.drivers || 48,
-            activeRides: data.activeRides || data.active || 12,
-            completedRides: data.completedRides || data.completed || 1847,
-            totalRevenue: data.totalRevenue || data.revenue || 284500,
-            pendingVerifications: data.pendingVerifications || data.pending || 5,
+            totalUsers: data.users || 0,
+            totalDrivers: data.drivers?.total ?? data.drivers ?? 0,
+            activeRides: (data.rides?.accepted ?? 0) + (data.rides?.inProgress ?? 0) + (data.rides?.requested ?? 0),
+            completedRides: data.rides?.completed ?? data.completedRides ?? 0,
+            totalRevenue: data.totalRevenue || 0,
+            pendingVerifications: (data.drivers?.total ?? 0) - (data.drivers?.verified ?? 0),
           });
         } else if (activeTab === 'users') {
           const res = await adminService.getUsers();

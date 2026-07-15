@@ -34,15 +34,18 @@ const DriverDashboard = () => {
         const [activeRes, ridesRes, earningsRes] = await Promise.allSettled([
           driverService.getActiveRide(),
           driverService.getMyRides({ limit: 5 }),
-          driverService.getEarnings(),
+          // Only call driver stats if user role is driver
+          user?.role === 'driver' ? driverService.getEarnings() : Promise.resolve(null),
         ]);
 
         if (activeRes.status === 'fulfilled') {
           const resData = activeRes.value.data;
-          // The API returns { success, data: [rides...] } — extract the first ride from the array
           const rides = resData.data || resData.rides || [];
-          const ride = Array.isArray(rides) ? rides[0] : rides;
-          if (ride && ride._id && !['completed', 'cancelled'].includes(ride.status)) {
+          const rideList = Array.isArray(rides) ? rides : [];
+          // Find the first ride that is not completed or cancelled
+          const activeStatuses = ['requested', 'accepted', 'arriving', 'in-progress', 'in_progress'];
+          const ride = rideList.find(r => activeStatuses.includes(r.status));
+          if (ride && ride._id) {
             setActiveRide(ride);
             setIsAvailable(true);
           }

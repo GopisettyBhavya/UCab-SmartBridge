@@ -89,7 +89,12 @@ const toggleAvailability = async (req, res, next) => {
       return next(new ErrorResponse('Driver profile not found', 404));
     }
 
-    driver.isAvailable = !driver.isAvailable;
+    // If a specific value was sent in the body, use it; otherwise toggle
+    if (req.body.isAvailable !== undefined) {
+      driver.isAvailable = Boolean(req.body.isAvailable);
+    } else {
+      driver.isAvailable = !driver.isAvailable;
+    }
     await driver.save();
 
     res.status(200).json({

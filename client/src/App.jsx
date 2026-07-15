@@ -13,6 +13,7 @@ import DriverDashboard from './pages/DriverDashboard';
 import DriverRideView from './pages/DriverRideView';
 import DriverEarnings from './pages/DriverEarnings';
 import AdminDashboard from './pages/AdminDashboard';
+import Help from './pages/Help';
 
 const NotFound = () => (
   <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', gap: '1rem', paddingTop: '70px' }}>
@@ -44,6 +45,7 @@ const App = () => {
         <Route element={<ProtectedRoute roles={['user', 'driver']} />}>
           <Route path="/profile" element={<Profile />} />
           <Route path="/ride/:id" element={<RideTracking />} />
+          <Route path="/help" element={<Help />} />
         </Route>
 
         {/* Driver routes */}

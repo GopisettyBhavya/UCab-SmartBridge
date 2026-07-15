@@ -38,8 +38,12 @@ const Dashboard = () => {
         }
 
         if (activeRes.status === 'fulfilled' && activeRes.value.data) {
-          const ride = activeRes.value.data.ride || activeRes.value.data;
-          if (ride && ride._id && !['completed', 'cancelled'].includes(ride.status)) {
+          const resData = activeRes.value.data;
+          const rides = resData.data || resData.rides || resData || [];
+          const rideList = Array.isArray(rides) ? rides : [];
+          const activeStatuses = ['requested', 'accepted', 'arriving', 'in-progress', 'in_progress'];
+          const ride = rideList.find(r => activeStatuses.includes(r.status));
+          if (ride && ride._id) {
             setActiveRide(ride);
           }
         }
@@ -56,7 +60,7 @@ const Dashboard = () => {
     { icon: FiMap, title: 'Book a Ride', desc: 'Find a ride now', path: '/book', color: 'var(--primary)' },
     { icon: FiClock, title: 'View History', desc: 'Past rides', path: '/history', color: 'var(--secondary)' },
     { icon: FiUser, title: 'My Profile', desc: 'Edit details', path: '/profile', color: 'var(--accent)' },
-    { icon: FiHelpCircle, title: 'Get Help', desc: 'Support center', path: '#', color: 'var(--warning)' },
+    { icon: FiHelpCircle, title: 'Get Help', desc: 'Support center', path: '/help', color: 'var(--warning)' },
   ];
 
   return (

@@ -7,7 +7,6 @@ const setupSocket = (io) => {
 
     /**
      * Join a ride room to receive real-time updates
-     * @param {string} rideId - The ride ID to join
      */
     socket.on('join-ride', (rideId) => {
       socket.join(rideId);
@@ -15,27 +14,34 @@ const setupSocket = (io) => {
     });
 
     /**
-     * Handle driver location updates
-     * Broadcast to all clients in the ride room
+     * Leave a ride room
+     */
+    socket.on('leave-ride', (rideId) => {
+      socket.leave(rideId);
+      console.log(`Socket ${socket.id} left ride room: ${rideId}`);
+    });
+
+    /**
+     * Handle driver location updates.
+     * Broadcasts as 'driver-location' so RideTracking.jsx receives it correctly.
      * @param {object} data - { rideId, latitude, longitude }
      */
     socket.on('update-location', (data) => {
       const { rideId, latitude, longitude } = data;
-      socket.to(rideId).emit('location-updated', {
-        latitude,
-        longitude,
+      // Emit to ride room so the tracking page receives the update
+      socket.to(rideId).emit('driver-location', {
+        lat: latitude,
+        lng: longitude,
         timestamp: new Date(),
       });
     });
 
     /**
      * Handle ride status changes
-     * Broadcast to all clients in the ride room
-     * @param {object} data - { rideId, status, message }
      */
     socket.on('ride-status-change', (data) => {
       const { rideId, status, message } = data;
-      socket.to(rideId).emit('status-changed', {
+      socket.to(rideId).emit('ride-status-changed', {
         status,
         message,
         timestamp: new Date(),

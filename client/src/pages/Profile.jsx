@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { FiEdit, FiLock, FiCreditCard, FiLogOut, FiSave, FiChevronRight } from 'react-icons/fi';
 import { FaRupeeSign } from 'react-icons/fa';
 import { useAuth } from '../context/AuthContext';
-import { authService, paymentService } from '../services/api';
+import { authService } from '../services/api';
 
 const Profile = () => {
   const { user, updateProfile, logout } = useAuth();
@@ -60,10 +60,9 @@ const Profile = () => {
   const handleTopUp = async () => {
     setToppingUp(true);
     try {
-      await paymentService.topUpWallet(500);
+      // Wallet top-up is simulated (no backend endpoint); just update local state
       setWalletBalance(prev => prev + 500);
     } catch (err) {
-      // simulate
       setWalletBalance(prev => prev + 500);
     } finally {
       setToppingUp(false);
