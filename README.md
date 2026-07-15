@@ -192,9 +192,13 @@ Login with `admin@ucab.com` / `admin123`.
 ## Team Members
 
 Johny H
+
 Gopisetty Bhavya
+
 Deepak Cheruku
+
 Harshitha Nallappagari
+
 Gomithra Ekambaram
 
 ## 📄 License
